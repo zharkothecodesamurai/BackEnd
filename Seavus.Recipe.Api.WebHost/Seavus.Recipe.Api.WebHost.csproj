@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Seavus.Recipe.Api.Services\Seavus.Recipe.Api.Services.csproj" />
+    <ProjectReference Include="..\Seavus.Recipe.Core\Seavus.Recipe.Core.csproj" />
+    <ProjectReference Include="..\Seavus.Recipe.DataProvider.Edamam\Seavus.Recipe.DataProvider.Edamam.csproj" />
+  </ItemGroup>
+
+</Project>
