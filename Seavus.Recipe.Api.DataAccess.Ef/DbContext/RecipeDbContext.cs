@@ -26,8 +26,12 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.DbContext
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CountryMapping());
+            modelBuilder.ApplyConfiguration(new CityMapping());
+            modelBuilder.ApplyConfiguration(new CitizenMapper());
         }
 
         public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Citizen> Citizens { get; set; }
     }
 }

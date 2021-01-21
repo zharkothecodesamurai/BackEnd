@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seavus.Recipe.Api.DataAccess.Ef.DbContext;
 
 namespace Seavus.Recipe.Api.DataAccess.Ef.Migrations.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    partial class RecipeContextModelSnapshot : ModelSnapshot
+    [Migration("20210121161342_testOdpoocetok")]
+    partial class testOdpoocetok
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

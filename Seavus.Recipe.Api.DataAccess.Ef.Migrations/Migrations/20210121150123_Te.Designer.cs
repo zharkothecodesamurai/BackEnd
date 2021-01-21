@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Seavus.Recipe.Api.DataAccess.Ef.DbContext;
 
 namespace Seavus.Recipe.Api.DataAccess.Ef.Migrations.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    partial class RecipeContextModelSnapshot : ModelSnapshot
+    [Migration("20210121150123_Te")]
+    partial class Te
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,53 +53,6 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Migrations.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Citizens");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Age = 30,
-                            CityId = 1,
-                            Height = 176,
-                            LastName = "Naum",
-                            Name = "Zharko"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Age = 30,
-                            CityId = 1,
-                            Height = 156,
-                            LastName = "Naum",
-                            Name = "Anastazija"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Age = 50,
-                            CityId = 2,
-                            Height = 180,
-                            LastName = "Naum",
-                            Name = "Bube"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Age = 40,
-                            CityId = 2,
-                            Height = 175,
-                            LastName = "Naum",
-                            Name = "Dare"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Age = 40,
-                            CityId = 1,
-                            Height = 175,
-                            LastName = "Naum",
-                            Name = "Cvare"
-                        });
                 });
 
             modelBuilder.Entity("Seavus.Recipe.Core.Entities.City", b =>
@@ -124,22 +79,6 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("City");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CityCodeA2 = "SK",
-                            CityName = "Skopje",
-                            Population = 1000000
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CityCodeA2 = "BG",
-                            CityName = "Beograd",
-                            Population = 2000000
-                        });
                 });
 
             modelBuilder.Entity("Seavus.Recipe.Core.Entities.Country", b =>
