@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Seavus.Recipe.Api.DataAccess.Ef.DbContext;
 using Seavus.Recipe.Api.Services;
 using Seavus.Recipe.Core.DataProvider;
 using Seavus.Recipe.Core.Services;
@@ -23,6 +24,8 @@ namespace Seavus.Recipe.Api.WebHost
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RecipeDbContext>();
+
             services.AddScoped<IDataProvider, EdamamDataProvider>();
             services.AddScoped<IHealthService, HealthService>();
             services.AddControllers();

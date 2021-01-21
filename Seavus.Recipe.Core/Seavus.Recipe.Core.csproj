@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Seavus.Recipe.Core.ViewModels\Seavus.Recipe.Core.ViewModels.csproj" />
   </ItemGroup>
 
