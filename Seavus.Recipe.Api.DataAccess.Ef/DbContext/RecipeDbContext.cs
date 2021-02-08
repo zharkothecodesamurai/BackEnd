@@ -25,9 +25,16 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.DbContext
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new CountryMapping());
+            modelBuilder.ApplyConfiguration(new UserMapping());
+            modelBuilder.ApplyConfiguration(new RecipeMapping());
+            modelBuilder.ApplyConfiguration(new IngridientMapping());
+            modelBuilder.ApplyConfiguration(new ShopingListMapping());
         }
 
-        public DbSet<Country> Countries { get; set; }
+        //public DbSet<Country> Countries { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<RecipeItem> Recipes { get; set; }
+        public DbSet<Ingridient> Ingridients { get; set; }
+        public DbSet<ShopingList> ShoppingList { get; set; }
     }
 }
