@@ -6,7 +6,12 @@ namespace Seavus.Recipe.Core.Entities
 {
     public class User
     {
-       
+        public User()
+        {
+            ShopingList = new ShopingList();
+        }
+
+        public static object Claims { get; set; }
 
         public Guid Id { get; set; }
         public string FirstName { get; set; }

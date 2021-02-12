@@ -14,5 +14,6 @@ namespace Seavus.Recipe.Core.Services
         Task<List<RecipeViewModel>> GetRecipesByUserId(Guid Id);
 
         Task DeleteRecipe(Guid RecipeId);
+        Task UpdateSingleRecipe(RecipeViewModel recipeViewModel, Guid guid);
     }
 }

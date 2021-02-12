@@ -32,7 +32,7 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Repository
 
         public async Task Update(ShopingList entity)
         {
-             _recipeDbContext.Update(entity);
+             _recipeDbContext.Add(entity);
             await _recipeDbContext.SaveChangesAsync();
 
             

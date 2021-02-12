@@ -6,8 +6,6 @@ using Seavus.Recipe.Core.Services;
 using Seavus.Recipe.Core.Shared.Exceptions;
 using Seavus.Recipe.Core.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Seavus.Recipe.Api.WebHost.Controllers

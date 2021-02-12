@@ -47,6 +47,26 @@ namespace Seavus.Recipe.Api.Services
             }
             return IngridientsList;
         }
+       
+
+        public static List<Ingridient> ToIngridientsListWithRecipeId(this List<IngridientViewModel> ingridientViewModels )
+        {
+            List<Ingridient> IngridientsList = new List<Ingridient>();
+            foreach (var item in ingridientViewModels)
+            {
+                IngridientsList.Add(new Ingridient
+                {
+                    Id = item.Id,
+                    RecipeId = item.RecipeId,
+                    Text = item.Text,
+                    Weight = item.Weight,
+                    Image = item.Image,
+
+                });
+
+            }
+            return IngridientsList;
+        }
 
         public static  List<RecipeViewModel> ToRecipeViewModelsList(this List<RecipeItem> recipeItems)
         {
@@ -85,8 +105,49 @@ namespace Seavus.Recipe.Api.Services
             }
             return IngridientsViewModelList;
         }
+        public static List<IngridientViewModel> ContainsEqualObjectById(this List<IngridientViewModel> ingridientViewModels,List<ShopingListIngredients>  sli )
+        {
+            List<IngridientViewModel> IngridientsToMap = new List<IngridientViewModel>();
 
-        public static List<RecipeViewModel> containsObject(this List<RecipeViewModel> recipeViewModels)
+            foreach (var item in ingridientViewModels)
+            {
+                var check = item.CheckIngridientsOfShopingList(sli);
+                if (check.Count>0)
+                {
+                    foreach (var itemForIngridient in check)
+                    {
+                        IngridientsToMap.Add(new IngridientViewModel
+                        {
+                            Id = itemForIngridient.Id,
+                            RecipeId = itemForIngridient.RecipeId,
+                            Text = itemForIngridient.Text,
+                            Weight = itemForIngridient.Weight,
+                            Image = itemForIngridient.Image
+                        });
+                    }
+                    return IngridientsToMap;
+                }
+            }
+
+            return IngridientsToMap;
+        }
+
+        public static List<IngridientViewModel> CheckIngridientsOfShopingList(this IngridientViewModel ingridientViewModels,List<ShopingListIngredients> list)
+        {
+            var listToAdd = new List<IngridientViewModel>();
+            for (var i = 0; i < list.Count; i++)
+            {
+                if (list[i].IngridientsId != ingridientViewModels.Id)
+                {
+
+                    listToAdd.Add(ingridientViewModels);
+                }
+            }
+            return listToAdd;
+
+
+        }
+        public static List<RecipeViewModel> ContainsObject(this List<RecipeViewModel> recipeViewModels)
         {
             List<RecipeViewModel> RecipesWithoutGuid = new List<RecipeViewModel>();
 

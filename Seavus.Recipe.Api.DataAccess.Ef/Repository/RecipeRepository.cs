@@ -57,5 +57,11 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Repository
             
 
         }
+
+        public async Task Update(RecipeItem recipeDb)
+        {
+            _recipeDbContext.Recipes.Update(recipeDb);
+            await _recipeDbContext.SaveChangesAsync();
+        }
     }
 }

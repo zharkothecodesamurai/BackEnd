@@ -13,5 +13,6 @@ namespace Seavus.Recipe.Core.DataAccess
 
         Task Delete(RecipeItem entity);
         Task<RecipeItem> GetRecipeByID(Guid Id);
+        Task Update(RecipeItem recipeDb);
     }
 }

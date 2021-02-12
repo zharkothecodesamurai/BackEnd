@@ -54,7 +54,7 @@ namespace Seavus.Recipe.Api.Services
             if (CheckedList.Count>0)
             {
                 //proveruvam dali ima empty guid za recipe po ingridient
-                List<RecipeViewModel> ListWithCheckedEmptyGuids = CheckedList.containsObject();
+                List<RecipeViewModel> ListWithCheckedEmptyGuids = CheckedList.ContainsObject();
                 List<RecipeItem> reuturnedListofRecipesItem = ListWithCheckedEmptyGuids.ToRecipeItemList(guidFormMapping);
                 if (ListWithCheckedEmptyGuids.Count > 0)
                 {
@@ -88,6 +88,54 @@ namespace Seavus.Recipe.Api.Services
             }
 
            await _recipeRepository.Delete(recipeDB);
+        }
+
+        public async Task UpdateSingleRecipe(RecipeViewModel recipeViewModel, Guid guid)
+        {
+            _logger.LogInformation("Executing Update single recipe service");
+            Guid RecipeId = recipeViewModel.Id;
+            RecipeItem RecipeDb = await _recipeRepository.GetRecipeByID(RecipeId);
+            var IngridientByRecipeDb = RecipeDb.Ingridients;
+
+            List<IngridientViewModel> recipesFromClientDistinct = recipeViewModel.Ingridients.Where(p => RecipeDb.Ingridients.All(l => p.Text != l.Text)).ToList();
+            List<Ingridient> recipesFromDbDistinct = RecipeDb.Ingridients.Where(p => recipeViewModel.Ingridients.All(l => l.Text != p.Text)).ToList();
+            List<Ingridient> IngridientsFromCLientDistinc = recipesFromClientDistinct.ToIngridientsList(RecipeId);
+            if(recipeViewModel.Ingridients.Count > IngridientByRecipeDb.Count)
+            {
+                foreach (Ingridient ingridient in IngridientsFromCLientDistinc)
+                {
+                    RecipeDb.Ingridients.Add(new Ingridient
+                    {
+                        //Id = Guid.NewGuid(),
+                        RecipeId = ingridient.RecipeId,
+                        Text = ingridient.Text,
+                        Recipe = RecipeDb,
+                        Weight = ingridient.Weight
+
+                    }
+
+                    );
+                    await Task.FromResult(RecipeDb);
+                }
+
+                await _recipeRepository.Update(RecipeDb);
+            }
+            if (recipeViewModel.Ingridients.Count < IngridientByRecipeDb.Count)
+            {
+                foreach (Ingridient ingridient in recipesFromDbDistinct)
+                {
+                    RecipeDb.Ingridients.Remove(ingridient);
+
+                   
+                    await Task.FromResult(RecipeDb);
+                }
+
+                await _recipeRepository.Update(RecipeDb);
+            }
+
+
+
+
         }
     }
 }

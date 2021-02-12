@@ -22,13 +22,13 @@ namespace Seavus.Recipe.Api.WebHost.Controllers
 
         private readonly ILogger _logger;
         private readonly IRecipeService _recipeService;
-        private readonly IUserService _userService;
+      
 
-        public RecipeController(ILogger<RecipeController> logger, IRecipeService recipeService, IUserService userService)
+        public RecipeController(ILogger<RecipeController> logger, IRecipeService recipeService)
         {
             _logger = logger;
             _recipeService = recipeService;
-            _userService = userService;
+  
         }
 
         [HttpGet]
@@ -104,6 +104,31 @@ namespace Seavus.Recipe.Api.WebHost.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
 
+        }
+        [HttpPut("Update")]
+        [Authorize]
+        public async Task<IActionResult> PutSingleRecipe([FromBody] RecipeViewModel recipeViewModel)
+        {
+            try
+            {
+                _logger.LogInformation("Executing Put Single recipe");
+             
+                var userId = User.Claims.First(x => x.Type == "UserId").Value;
+                Guid guid = Guid.Parse(userId);
+                await _recipeService.UpdateSingleRecipe(recipeViewModel, guid);
+                return Ok($"Resource Updated");
+            }
+            catch (NotFoundException e)
+            {
+                _logger.LogError(e, $"{e.InnerException}");
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError(e, $"{e.InnerException}");
+                return StatusCode(StatusCodes.Status500InternalServerError, e.InnerException);
+            }
         }
 
         [HttpDelete("delete")]

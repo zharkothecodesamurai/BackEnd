@@ -24,7 +24,7 @@ namespace Seavus.Recipe.Api.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger _logger;
-        private IOptions<ApplicationSettings> _options;
+        private readonly IOptions<ApplicationSettings> _options;
 
         public UserService(IUserRepository userRepository, ILogger<UserService> logger, IOptions<ApplicationSettings> options)
         {
@@ -116,7 +116,8 @@ namespace Seavus.Recipe.Api.Services
                 LastName = registerModel.LastName,
                 Username = registerModel.UserName,
                 Email = registerModel.Email,
-                Password = hashedPassword
+                Password = hashedPassword,
+                
             };
 
             await _userRepository.Add(newUser);

@@ -6,12 +6,17 @@ namespace Seavus.Recipe.Core.Entities
 {
     public class ShopingList
     {
-
+        public ShopingList()
+        {
+            ShopingListIngredients = new List<ShopingListIngredients>();
+        }
 
         public Guid Id { get; set; }
         //public int UserId { get; set; }
 
         public User User { get; set; }
         public List<ShopingListIngredients> ShopingListIngredients { get; set; }
+
+      
     }
 }

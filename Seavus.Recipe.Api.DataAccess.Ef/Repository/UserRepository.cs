@@ -46,7 +46,23 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Repository
 
         public async Task<User> GetUserById(Guid Id)
         {
-           return await _recipeDbContext.Users.FirstOrDefaultAsync(x => x.Id == Id);      
+           return await _recipeDbContext.Users.
+                Include(x=>x.Recipes).ThenInclude(x=>x.Ingridients)
+                .Include(x=>x.ShopingList).ThenInclude(x=>x.ShopingListIngredients).
+                FirstOrDefaultAsync(x => x.Id == Id);      
+        }
+
+        public async Task Update(User entity)
+        {
+            try
+            {
+                _recipeDbContext.Users.Update(entity);
+                await _recipeDbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"{e.InnerException}");
+            }
         }
     }
 }

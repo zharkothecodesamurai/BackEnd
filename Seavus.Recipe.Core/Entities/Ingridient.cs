@@ -5,7 +5,14 @@ using System.Text;
 namespace Seavus.Recipe.Core.Entities
 {
     public class Ingridient
+
     {
+        public Ingridient()
+        {
+            ShopingListIngredients = new List<ShopingListIngredients>();
+        }
+
+        
         public Guid Id { get; set; }
         public string Text { get; set; }
         public string Weight { get; set; }

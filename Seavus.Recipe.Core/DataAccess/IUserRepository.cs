@@ -11,5 +11,7 @@ namespace Seavus.Recipe.Core.DataAccess
         Task<List<User>> GetAll();
         Task<User> GetUserById(Guid Id);
         Task Add(User entity);
+
+        Task Update(User entity);
     }
 }

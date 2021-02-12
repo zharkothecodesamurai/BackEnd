@@ -44,6 +44,7 @@ namespace Seavus.Recipe.Api.WebHost
 
             services.AddScoped<IDataProvider, EdamamDataProvider>();
             services.AddScoped<IHealthService, HealthService>();
+            services.AddScoped<IShopingListService, ShoppingListService>();
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddControllers();
 
@@ -82,7 +83,7 @@ namespace Seavus.Recipe.Api.WebHost
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
            
             //tuka

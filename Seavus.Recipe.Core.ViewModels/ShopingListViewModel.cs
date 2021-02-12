@@ -8,7 +8,7 @@ namespace Seavus.Recipe.Core.ViewModels
 {
     public class ShopingListViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public List<IngridientViewModel> Ingridients { get; set; }
     }
 }

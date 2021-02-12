@@ -99,7 +99,7 @@ namespace Seavus.Recipe.Api.DataAccess.Ef.Migrations.Migrations
                         column: x => x.IngridientsId,
                         principalTable: "Ingridients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ShopingListIngredients_ShopingLists_ShopingListId",
                         column: x => x.ShopingListId,
