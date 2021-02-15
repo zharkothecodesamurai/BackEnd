@@ -75,5 +75,31 @@ namespace Seavus.Recipe.Api.WebHost.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        [HttpPut("remove/ingridient/{Id}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveIngridientFromShopingList(Guid Id)
+        {
+            try
+            {
+
+                _logger.LogInformation("Executing RemoveIngridientFromShopingList");
+                var userId = User.Claims.First(x => x.Type == "UserId").Value;
+                Guid UserId = Guid.Parse(userId);
+                await _slService.DelteSingleIngredientOfShopingList(Id,UserId);
+                return StatusCode( StatusCodes.Status204NoContent,"Ingredient Removed From ShopingList");
+            }
+            catch (NotFoundException e)
+            {
+                _logger.LogError(e, $"{e.InnerException}");
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
+            }
+            catch (Exception e)
+            {
+                //log
+                _logger.LogError(e, $"{e.InnerException}");
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
     }
 }

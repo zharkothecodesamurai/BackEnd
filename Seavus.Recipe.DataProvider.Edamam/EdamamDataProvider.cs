@@ -27,50 +27,59 @@ namespace Seavus.Recipe.DataProvider.Edamam
             return await Task.FromResult(true);
         }
 
-        public async Task<List<RecipeViewModelDataProvider>> SearchRecipe(string query) {
+        public async Task<List<RecipeViewModelDataProvider>> SearchRecipe(string query)
+        {
             //var result = new List<string>();
             //return await Task.FromResult(result);
 
-            
-            
+
+            _logger.LogInformation($"Executing SearchRecipe for {query}");
             HttpClient httpClient = new HttpClient();
             string url = $"https://api.edamam.com/search?q={query}&app_id=bf5bad45&app_key=9d3abac91e6f19663b088521f42ea4ec";
-            System.Console.WriteLine(url);
+            Console.WriteLine(url);
             HttpResponseMessage responseMessage = httpClient.GetAsync(url).Result;
 
             string responseBody = responseMessage.Content.ReadAsStringAsync().Result;
             string response = await Task.FromResult(responseBody);
-            System.Console.WriteLine(response);
-
-            EdamResponce ResponceFromEdmam = JsonConvert.DeserializeObject<EdamResponce>(response);
-
-            EdamResponce finalRespond = ResponceFromEdmam;
-            System.Console.WriteLine(finalRespond);
-
-            List<RecipeItemEdamam> ResponseHit = new List<RecipeItemEdamam>();
-
-            foreach (var item in finalRespond.Hits)
+            Console.WriteLine(response);
+            if (responseMessage.IsSuccessStatusCode)
             {
-                ResponseHit.Add(item.Recipe);
-                System.Console.WriteLine(item.Recipe.Label);
-            }
+                EdamResponce ResponceFromEdmam = JsonConvert.DeserializeObject<EdamResponce>(response);
 
-            List<RecipeViewModelDataProvider> recipeVmDataProvider = new List<RecipeViewModelDataProvider>();
+                EdamResponce finalRespond = ResponceFromEdmam;
+                Console.WriteLine(finalRespond);
 
-            foreach (var item in ResponseHit)
-            {
+                List<RecipeItemEdamam> ResponseHit = new List<RecipeItemEdamam>();
 
-                recipeVmDataProvider.Add(new RecipeViewModelDataProvider
+                foreach (var item in finalRespond.Hits)
                 {
-                    Id = Guid.NewGuid(),
-                    Label = item.Label,
-                    Calories = item.Calories,
-                    ImagePath = item.Image,
-                    //Ingredients = (List<IngridientViewModel>)item.Ingredients.Select(x => x.ToIngridientViewModel())
-                    Ingredients = item.Ingredients.ToListIngridietsFromList()
-                });
+                    ResponseHit.Add(item.Recipe);
+                    Console.WriteLine(item.Recipe.Label);
+                }
+
+                List<RecipeViewModelDataProvider> recipeVmDataProvider = new List<RecipeViewModelDataProvider>();
+
+                foreach (var item in ResponseHit)
+                {
+
+                    recipeVmDataProvider.Add(new RecipeViewModelDataProvider
+                    {
+                        Id = Guid.NewGuid(),
+                        Label = item.Label,
+                        Calories = item.Calories,
+                        ImagePath = item.Image,
+                        //Ingredients = (List<IngridientViewModel>)item.Ingredients.Select(x => x.ToIngridientViewModel())
+                        Ingredients = item.Ingredients.ToListIngridietsFromList()
+                    });
+                }
+                return await Task.FromResult(recipeVmDataProvider);
             }
-            return await Task.FromResult(recipeVmDataProvider);
+            else
+            {
+                _logger.LogError($"The error during the request is {responseMessage.ReasonPhrase }");
+                throw new Exception($"There was an error getting the responce from api : { responseMessage.ReasonPhrase}");
+            }
+
         }
     }
 }

@@ -82,17 +82,19 @@ namespace Seavus.Recipe.Api.Services
         //        User=ingredient.Recipe.User
         //    };
         //}
-        public static List<ShopingListIngredients> ToShopingListIngridientsFromIngridient(this Ingridient ingredient,Guid shId,ShopingList sh)
+        public static List<ShopingListIngredients> ToShopingListIngridientsFromIngridient(this Ingridient ingredient,Guid shId)
         {
-            var list = new List<ShopingListIngredients>();
-            list.Add(new ShopingListIngredients
+            List<ShopingListIngredients> list = new List<ShopingListIngredients>
             {
-                ShopingListId=shId,
-                IngridientsId=ingredient.Id,
-                //ShopingList=sh
+                new ShopingListIngredients
+                {
+                    ShopingListId = shId,
+                    IngridientsId = ingredient.Id,
+                    //ShopingList=sh
 
-                //ShopingList=ingredient.ToSHopingListFromIngridientFF(shId)
-            });
+                    //ShopingList=ingredient.ToSHopingListFromIngridientFF(shId)
+                }
+            };
             return list;
         }
     }

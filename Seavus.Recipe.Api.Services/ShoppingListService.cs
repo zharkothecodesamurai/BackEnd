@@ -15,14 +15,17 @@ namespace Seavus.Recipe.Api.Services
         private readonly ILogger _logger;
         private readonly IShopingListRepository _shopingListRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IIngridientRepository _ingridientRepository;
         
 
-        public ShoppingListService(ILogger<ShoppingListService> logger, IShopingListRepository shopingListRepository, IUserRepository userRepository)
+        public ShoppingListService(ILogger<ShoppingListService> logger, IShopingListRepository shopingListRepository, IUserRepository userRepository, IIngridientRepository ingridientRepository)
         {
            _logger = logger;
            _shopingListRepository = shopingListRepository;
             _userRepository = userRepository;
-          
+            _ingridientRepository = ingridientRepository;
+
+
         }
 
         public async Task<ShopingListViewModel> GetSlByUserId(Guid UserId)
@@ -44,6 +47,33 @@ namespace Seavus.Recipe.Api.Services
             return await Task.FromResult(shopingListViewM);
         }
 
+        public async Task DelteSingleIngredientOfShopingList(Guid IngId,Guid UserID)
+        {
+            _logger.LogInformation($"Executing DelteSingleIngredientOfShopingList");
+            var Ingridient = await _ingridientRepository.GetIngridientById(IngId);
+            Console.WriteLine(Ingridient);
+            User UserDb = await _userRepository.GetUserById(UserID);
+            Console.WriteLine(UserDb);
+
+            var dc = Ingridient.ShopingListIngredients.Select(x => x).ToList();
+            foreach (var item in dc)
+            {
+                Ingridient.ShopingListIngredients.Remove(item);
+            }
+            var check = Ingridient.ShopingListIngredients;
+
+            User UserDba = await _userRepository.GetUserById(UserID);
+            Console.WriteLine(UserDba);
+
+             await _ingridientRepository.Update(Ingridient);
+            //var ingridient = UserDb.Recipes.SelectMany(x => x.Ingridients.Where(l => l.Id == IngId)).ToList();
+            //var removeIngFromSL = ingridient[0];
+
+            //removeIngFromSL.ShopingListIngredients.Select(x => x.ShopingListId = Guid.Empty);
+            //Console.WriteLine(removeIngFromSL);
+            //return await Task.FromResult();
+        }
+
         public async Task PostShopingListIngredients(List<IngridientViewModel> ingredients, Guid ShopingListId)
         {
             _logger.LogInformation($"Executing PostShopingListIngredients");
@@ -55,6 +85,7 @@ namespace Seavus.Recipe.Api.Services
             foreach (var item in ingredients)
             {
                 list.Add(UserDb.Recipes.SelectMany(x => x.Ingridients.Where(l => l.Id == item.Id)).ToList());
+                //list.Add(UserDb.Recipes.SelectMany(x => x.Ingridients.Where(l => l.Text == item.Text)).ToList());
             }
             List<Ingridient> ListIngridientsByDBFromClient = list.SelectMany(x => x).ToList();
             //ova za da napravam sporedba so size na db i sto pustam od request
@@ -66,6 +97,7 @@ namespace Seavus.Recipe.Api.Services
                 //{
                 //    IngridentsList.Add(item.Ingridient);
                 //}
+                //List<Ingridient> CheckForDuplicatesFromDb = ListIngridientsByDBFromClient.Where(p => UserDbShopingListIngridients.All(l => p.Text != l.Text)).ToList();
                 List<Ingridient> CheckForDuplicatesFromDb = ListIngridientsByDBFromClient.Where(p => UserDbShopingListIngridients.All(l => p.Id != l.Id)).ToList();
                 if (CheckForDuplicatesFromDb.Count > 0)
                 {
@@ -76,7 +108,7 @@ namespace Seavus.Recipe.Api.Services
                         //List<Ingridient> UniqueIngridients = UniqueIngridientsViewModels.ToIngridientsListWithRecipeId();
                         foreach (var item in CheckForDuplicatesFromDb)
                         {
-                            item.ShopingListIngredients = item.ToShopingListIngridientsFromIngridient(ShopingListId, ShopingListObj);
+                            item.ShopingListIngredients = item.ToShopingListIngridientsFromIngridient(ShopingListId);
                         }
                         foreach (var item in CheckForDuplicatesFromDb)
                         {
@@ -105,9 +137,9 @@ namespace Seavus.Recipe.Api.Services
             
             else
             {
-                foreach (var item in ListIngridientsByDBFromClient)
+                foreach (Ingridient item in ListIngridientsByDBFromClient)
                 {
-                    item.ShopingListIngredients = item.ToShopingListIngridientsFromIngridient(ShopingListId, ShopingListObj);
+                    item.ShopingListIngredients = item.ToShopingListIngridientsFromIngridient(ShopingListId);
                 }
                
                 //var check = UserDb.Recipes.Select(x => x.Ingridients.Where(l => l.Id == x.Id)).ToList();
@@ -116,7 +148,7 @@ namespace Seavus.Recipe.Api.Services
                 //{
                 //    item.ShopingListIngredients = item.ToShopingListIngridientsFromIngridient(ShopingListId, ShopingListObj);
                 //}
-                foreach (var item in ListIngridientsByDBFromClient)
+                foreach (Ingridient item in ListIngridientsByDBFromClient)
                 {
                     ing.Add(new ShopingListIngredients
                     {
@@ -156,5 +188,7 @@ namespace Seavus.Recipe.Api.Services
 
 
         }
+
+
     }
 }

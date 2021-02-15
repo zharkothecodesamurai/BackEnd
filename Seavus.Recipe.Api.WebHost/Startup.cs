@@ -40,8 +40,9 @@ namespace Seavus.Recipe.Api.WebHost
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IShopingListRepository, ShoppingListRepository>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IIngridientRepository, IngridientRepository>();
 
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDataProvider, EdamamDataProvider>();
             services.AddScoped<IHealthService, HealthService>();
             services.AddScoped<IShopingListService, ShoppingListService>();

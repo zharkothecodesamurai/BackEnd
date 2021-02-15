@@ -10,6 +10,7 @@ namespace Seavus.Recipe.Core.Services
         Task<ShopingListViewModel> GetSlByUserId(Guid UserId);
 
         Task PostShopingListIngredients(List<IngridientViewModel> ingridients, Guid ShopingListID);
+        Task DelteSingleIngredientOfShopingList(Guid IngId,Guid UserId);
 
     }
 }
